@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2: Databases — Learning Materials</title>
+<style>
+  :root{
+    --bg:#f2f7f2;
+    --surface:#ffffff;
+    --ink:#12241a;
+    --ink-soft:#3a5245;
+    --muted:#6b8478;
+    --brand:#2f7d4f;
+    --brand-deep:#14532d;
+    --brand-soft:#e7f4ea;
+    --accent:#65a30d;
+    --accent-soft:#f3fae6;
+    --green:#047857;
+    --green-soft:#ecfdf5;
+    --red:#b91c1c;
+    --red-soft:#fef2f2;
+    --border:#dbe8de;
+    --code-bg:#0f2119;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(16,40,24,.06), 0 10px 28px -14px rgba(16,40,24,.24);
+  }
+
+  *{box-sizing:border-box}
+
+  html{scroll-behavior:smooth}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:17px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- progress bar ---------- */
+  .progress{
+    position:fixed;top:0;left:0;right:0;height:4px;
+    background:transparent;z-index:60;
+  }
+  .progress-bar{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,#14532d,#2f7d4f,#84cc16);
+    transition:width .12s linear;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:
+      radial-gradient(900px 420px at 12% -10%, rgba(132,204,22,.38), transparent 62%),
+      radial-gradient(700px 380px at 88% 0%, rgba(45,212,191,.26), transparent 62%),
+      linear-gradient(135deg,#0b2e1c 0%,#14532d 48%,#2f7d4f 100%);
+    color:#fff;
+    padding:60px 24px 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;inset:auto -10% -55% -10%;
+    height:70%;
+    background:radial-gradient(closest-side, rgba(255,255,255,.10), transparent 70%);
+    pointer-events:none;
+  }
+  .hero-inner{max-width:1120px;margin:0 auto;position:relative;z-index:2}
+  .eyebrow{
+    display:inline-block;
+    margin:0 0 14px;
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.3);
+    padding:5px 13px;
+    border-radius:999px;
+  }
+  .hero h1{
+    margin:0 0 12px;
+    font-size:clamp(2.1rem,5.5vw,3.4rem);
+    line-height:1.1;
+    letter-spacing:-.025em;
+    font-weight:800;
+  }
+  .lede{
+    margin:0 0 24px;
+    max-width:62ch;
+    font-size:clamp(1rem,2.2vw,1.16rem);
+    color:rgba(255,255,255,.9);
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{
+    font-size:.85rem;
+    padding:6px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.26);
+    backdrop-filter:blur(4px);
+  }
+
+  /* ---------- course meta strip ---------- */
+  .meta{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:14px;
+    margin:30px 0 26px;
+    padding:18px 20px;
+    border-radius:var(--radius);
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.24);
+    backdrop-filter:blur(6px);
+  }
+  .meta-item{display:flex;gap:12px;align-items:flex-start}
+  .meta-icon{
+    flex:none;
+    width:34px;height:34px;
+    display:grid;place-items:center;
+    border-radius:10px;
+    background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.26);
+    font-size:.95rem;
+  }
+  .meta-label{
+    display:block;
+    font-size:.68rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.72);
+    font-weight:700;
+    margin-bottom:2px;
+  }
+  .meta-value{
+    display:block;
+    font-size:.95rem;
+    font-weight:650;
+    color:#fff;
+    line-height:1.35;
+  }
+
+  /* ---------- layout ---------- */
+  .layout{
+    max-width:1120px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:236px minmax(0,1fr);
+    gap:44px;
+    padding:44px 24px 96px;
+  }
+
+  /* ---------- toc ---------- */
+  .toc{
+    position:sticky;
+    top:26px;
+    align-self:start;
+    font-size:.9rem;
+  }
+  .toc h2{
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.13em;
+    color:var(--muted);
+    margin:0 0 12px 12px;
+    font-weight:700;
+  }
+  .toc ol{list-style:none;margin:0;padding:0}
+  .toc li{margin-bottom:2px}
+  .toc a{
+    display:block;
+    padding:7px 12px;
+    border-radius:9px;
+    color:var(--ink-soft);
+    text-decoration:none;
+    border-left:3px solid transparent;
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .toc a:hover{background:#fff;color:var(--brand)}
+  .toc a.active{
+    background:var(--brand-soft);
+    color:var(--brand-deep);
+    font-weight:600;
+    border-left-color:var(--brand);
+  }
+
+  /* ---------- content ---------- */
+  main{min-width:0}
+
+  section{scroll-margin-top:24px;margin-bottom:52px}
+
+  h2.section-title{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-size:1.65rem;
+    letter-spacing:-.02em;
+    margin:0 0 20px;
+    padding-bottom:14px;
+    border-bottom:2px solid var(--border);
+    color:var(--brand-deep);
+  }
+  .badge{
+    flex:none;
+    display:grid;
+    place-items:center;
+    width:40px;height:40px;
+    border-radius:11px;
+    background:linear-gradient(135deg,#14532d,#2f7d4f 55%,#84cc16);
+    color:#fff;
+    font-size:1.05rem;
+    font-weight:800;
+    box-shadow:0 6px 16px -6px rgba(20,83,45,.75);
+  }
+
+  h3{
+    font-size:1.18rem;
+    margin:34px 0 10px;
+    letter-spacing:-.01em;
+    color:var(--brand-deep);
+  }
+  h3 .num{
+    color:var(--brand);
+    font-variant-numeric:tabular-nums;
+    margin-right:8px;
+  }
+
+  h4{font-size:1rem;margin:22px 0 8px;color:var(--ink-soft)}
+
+  p{margin:0 0 14px}
+  ul,ol{margin:0 0 16px;padding-left:22px}
+  li{margin-bottom:7px}
+  strong{color:#0b1f14}
+
+  a{color:var(--brand)}
+
+  /* ---------- cards ---------- */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    box-shadow:var(--shadow);
+    margin-bottom:22px;
+  }
+
+  /* ---------- objectives ---------- */
+  .objectives{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:5px solid var(--brand);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    box-shadow:var(--shadow);
+    margin-bottom:44px;
+  }
+  .objectives h2{
+    margin:0 0 14px;
+    font-size:1.05rem;
+    text-transform:uppercase;
+    letter-spacing:.09em;
+    color:var(--brand);
+  }
+  .objectives ul{list-style:none;padding:0;margin:0}
+  .objectives li{
+    position:relative;
+    padding-left:32px;
+    margin-bottom:10px;
+    color:var(--ink-soft);
+  }
+  .objectives li::before{
+    content:"✓";
+    position:absolute;
+    left:0;top:0;
+    width:21px;height:21px;
+    display:grid;place-items:center;
+    border-radius:6px;
+    background:var(--brand-soft);
+    color:var(--brand);
+    font-size:.78rem;
+    font-weight:800;
+    line-height:1;
+  }
+
+  /* ---------- callouts ---------- */
+  .callout{
+    border-radius:12px;
+    padding:16px 18px 16px 52px;
+    margin:20px 0;
+    position:relative;
+    font-size:.96rem;
+    border:1px solid;
+  }
+  .callout::before{
+    position:absolute;left:17px;top:15px;
+    font-size:1.05rem;line-height:1;
+  }
+  .callout p:last-child{margin-bottom:0}
+  .callout.tip{background:var(--green-soft);border-color:#a7f3d0;color:#065f46}
+  .callout.tip::before{content:"💡"}
+  .callout.warn{background:#fdf6e8;border-color:#f0d9a8;color:#8a5a12}
+  .callout.warn::before{content:"⚠️"}
+  .callout.key{background:var(--accent-soft);border-color:#d3e8b0;color:#3f6212}
+  .callout.key::before{content:"🌿"}
+
+  /* ---------- tables ---------- */
+  .table-wrap{overflow-x:auto;margin:18px 0 24px;border-radius:12px;border:1px solid var(--border);background:#fff}
+  table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:520px}
+  caption{
+    caption-side:top;
+    text-align:left;
+    padding:12px 16px 0;
+    font-size:.82rem;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  th{
+    background:#eef6f0;
+    text-align:left;
+    padding:11px 16px;
+    font-size:.78rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:#2b4636;
+    border-bottom:1px solid var(--border);
+  }
+  td{padding:11px 16px;border-bottom:1px solid #eef3ef;color:var(--ink-soft)}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#f7fbf8}
+  td code{background:#e9f3ec;color:#1f5c3a;padding:2px 7px;border-radius:5px;font-size:.85em}
+
+  /* ---------- code ---------- */
+  code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.88em;
+  }
+  p code,li code,td code{
+    background:#eaf4ed;
+    color:#1f5c3a;
+    padding:2px 6px;
+    border-radius:5px;
+    border:1px solid #d3e6da;
+    white-space:nowrap;
+  }
+  .codeblock{
+    margin:18px 0 24px;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 10px 26px -18px rgba(10,40,24,.6);
+    border:1px solid #0a1a13;
+  }
+  .codeblock .bar{
+    display:flex;align-items:center;gap:8px;
+    background:#132a20;
+    padding:9px 14px;
+    border-bottom:1px solid #234034;
+  }
+  .codeblock .dot{width:10px;height:10px;border-radius:50%}
+  .dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+  .codeblock .lang{
+    margin-left:auto;
+    font-size:.7rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#7fa392;
+    font-weight:700;
+  }
+  pre{
+    margin:0;
+    padding:18px 20px;
+    background:var(--code-bg);
+    overflow-x:auto;
+    line-height:1.65;
+  }
+  pre code{
+    font-size:.87rem;
+    color:#dcefe2;
+    background:none;
+    padding:0;
+    border:none;
+    white-space:pre;
+  }
+  .tok-kw{color:#4ade80;font-weight:600}
+  .tok-str{color:#fcd34d}
+  .tok-com{color:#6b8f7a;font-style:italic}
+  .tok-num{color:#7dd3fc}
+
+  /* ---------- object cards grid ---------- */
+  .obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:22px 0}
+  .obj{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    box-shadow:0 1px 2px rgba(16,40,24,.05);
+    border-top:3px solid var(--accent);
+  }
+  .obj h4{margin:0 0 6px;font-size:.98rem;color:var(--brand-deep)}
+  .obj p{margin:0;font-size:.89rem;color:var(--muted);line-height:1.6}
+
+  /* ---------- summary list ---------- */
+  .takeaways{
+    background:linear-gradient(135deg,#0b2e1c,#14532d 60%,#2f7d4f);
+    color:#dcefe2;
+    border-radius:var(--radius);
+    padding:26px 28px;
+    box-shadow:var(--shadow);
+  }
+  .takeaways h2{margin:0 0 16px;color:#fff;font-size:1.2rem}
+  .takeaways ul{list-style:none;padding:0;margin:0}
+  .takeaways li{position:relative;padding-left:26px;margin-bottom:11px;font-size:.95rem}
+  .takeaways li::before{
+    content:"🌱";
+    position:absolute;left:0;top:0;
+    font-size:.8rem;
+  }
+  .takeaways strong{color:#fff}
+
+  /* ---------- glossary ---------- */
+  .glossary{display:grid;gap:10px;margin-top:18px}
+  .term{
+    background:#fff;
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    padding:13px 17px;
+    font-size:.92rem;
+  }
+  .term b{color:var(--brand);display:block;font-size:.83rem;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+  .term span{color:var(--ink-soft)}
+
+  /* ---------- quiz ---------- */
+  .quiz{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+  .q{
+    padding:18px 0;
+    border-bottom:1px dashed var(--border);
+  }
+  .q:last-of-type{border-bottom:none}
+  .q-text{
+    font-weight:650;
+    margin:0 0 12px;
+    display:flex;
+    gap:11px;
+    align-items:flex-start;
+    color:var(--ink);
+  }
+  .q-num{
+    flex:none;
+    width:25px;height:25px;
+    display:grid;place-items:center;
+    border-radius:7px;
+    background:var(--brand-soft);
+    color:var(--brand);
+    font-size:.8rem;
+    font-weight:800;
+    margin-top:2px;
+  }
+  .q label{
+    display:flex;
+    gap:11px;
+    align-items:flex-start;
+    padding:10px 14px;
+    margin-bottom:7px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    cursor:pointer;
+    font-size:.94rem;
+    color:var(--ink-soft);
+    transition:border-color .15s,background .15s;
+  }
+  .q label:hover{border-color:#a9cbb6;background:#f7fbf8}
+  .q input{margin-top:5px;accent-color:var(--brand);flex:none}
+  .q label.correct{border-color:#6ee7b7;background:var(--green-soft);color:#065f46}
+  .q label.incorrect{border-color:#fca5a5;background:var(--red-soft);color:#991b1b}
+  .feedback{
+    display:none;
+    margin-top:10px;
+    padding:11px 15px;
+    border-radius:9px;
+    font-size:.9rem;
+    line-height:1.6;
+  }
+  .feedback.show{display:block}
+  .feedback.ok{background:var(--green-soft);color:#065f46;border:1px solid #a7f3d0}
+  .feedback.no{background:var(--red-soft);color:#991b1b;border:1px solid #fecaca}
+  .feedback.neutral{background:#f1f4f2;color:var(--muted);border:1px solid var(--border)}
+
+  .quiz-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:22px}
+  button{
+    font:inherit;
+    font-weight:650;
+    font-size:.93rem;
+    padding:11px 22px;
+    border-radius:10px;
+    border:1.5px solid transparent;
+    cursor:pointer;
+    transition:transform .12s,box-shadow .15s,background .15s;
+  }
+  button:active{transform:translateY(1px)}
+  .btn-primary{
+    background:linear-gradient(135deg,#14532d,#2f7d4f 60%,#65a30d);
+    color:#fff;
+    box-shadow:0 8px 20px -10px rgba(20,83,45,.95);
+  }
+  .btn-primary:hover{box-shadow:0 10px 24px -8px rgba(20,83,45,.95)}
+  .btn-ghost{background:#fff;border-color:var(--border);color:var(--ink-soft)}
+  .btn-ghost:hover{background:#f4f9f5}
+  #score{
+    font-weight:750;
+    color:var(--brand);
+    margin:0;
+    font-size:.98rem;
+  }
+
+  /* ---------- back to top ---------- */
+  #toTop{
+    position:fixed;
+    right:22px;bottom:22px;
+    width:46px;height:46px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#14532d,#2f7d4f);
+    color:#fff;
+    border:none;
+    display:grid;place-items:center;
+    font-size:1.15rem;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s,transform .25s;
+    box-shadow:0 10px 26px -10px rgba(20,83,45,.95);
+    z-index:50;
+  }
+  #toTop.show{opacity:1;pointer-events:auto}
+  #toTop:hover{transform:translateY(-3px)}
+
+  footer{
+    text-align:center;
+    padding:30px 24px 46px;
+    color:var(--muted);
+    font-size:.85rem;
+    border-top:1px solid var(--border);
+    background:#fff;
+  }
+  footer strong{color:var(--brand-deep)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    body{font-size:16px}
+    .layout{grid-template-columns:1fr;gap:26px;padding:26px 18px 70px}
+    .toc{
+      position:static;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:16px 18px;
+      box-shadow:var(--shadow);
+    }
+    .toc h2{margin-left:2px}
+    .toc ol{display:flex;flex-wrap:wrap;gap:6px}
+    .toc a{border-left:none;border-radius:999px;background:#f0f6f1;padding:6px 13px;font-size:.85rem}
+    .toc a.active{background:var(--brand);color:#fff}
+    .hero{padding:44px 20px 48px}
+    .meta{grid-template-columns:1fr}
+    h2.section-title{font-size:1.35rem}
+    .badge{width:34px;height:34px;font-size:.95rem}
+    .card,.quiz{padding:18px}
+    .objectives{padding:20px}
+    #toTop{right:16px;bottom:16px}
+  }
+
+  @media print{
+    .toc,#toTop,.progress,.quiz-actions,button{display:none!important}
+    body{background:#fff;font-size:11pt}
+    .hero{background:#fff;color:#000;padding:0 0 16px;border-bottom:2px solid #000}
+    .hero .eyebrow,.chip{display:none}
+    .hero h1{color:#000}
+    .lede{color:#333}
+    .meta{background:#fff;border:1px solid #ccc;color:#000}
+    .meta-label{color:#555}
+    .meta-value{color:#000}
+    .meta-icon{background:#eee;border-color:#ccc}
+    .layout{display:block;padding:0}
+    section{page-break-inside:avoid;margin-bottom:26px}
+    .card,.objectives,.quiz,.takeaways{box-shadow:none;border:1px solid #ccc}
+    .takeaways{background:#fff;color:#000}
+    .takeaways h2,.takeaways strong{color:#000}
+    pre{background:#f4f4f4;color:#000;border:1px solid #ccc}
+    pre code{color:#000}
+    .tok-kw{color:#000;font-weight:700}
+    .tok-str{color:#000}
+    .tok-com{color:#555}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Module 2</p>
+    <h1>Databases</h1>
+    <p class="lede">
+      An introduction to what databases are, the objects they contain, and how to
+      open and close a database connection using SQL.
+    </p>
+
+    <div class="meta">
+      <div class="meta-item">
+        <span class="meta-icon" aria-hidden="true">👨‍🏫</span>
+        <span>
+          <span class="meta-label">Instructor</span>
+          <span class="meta-value">Engr. Lee-Mher S. Binay-an</span>
+        </span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-icon" aria-hidden="true">🏫</span>
+        <span>
+          <span class="meta-label">School</span>
+          <span class="meta-value">Isabela State University</span>
+        </span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-icon" aria-hidden="true">📚</span>
+        <span>
+          <span class="meta-label">Subject</span>
+          <span class="meta-value">Electronic Data Processing Including Business Programming</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip">🗄️ Relational Databases</span>
+      <span class="chip">💻 SQL</span>
+      <span class="chip">🎯 3 Learning Objectives</span>
+      <span class="chip">⏱️ ~60 minutes</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ================= TABLE OF CONTENTS ================= -->
+  <nav class="toc" aria-label="Table of contents">
+    <h2>On this page</h2>
+    <ol>
+      <li><a href="#objectives">Learning Objectives</a></li>
+      <li><a href="#section-a">A. Databases</a></li>
+      <li><a href="#section-b">B. Database Objects</a></li>
+      <li><a href="#section-c">C. Opening &amp; Closing</a></li>
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#exercise">Hands-On Exercise</a></li>
+      <li><a href="#glossary">Glossary</a></li>
+      <li><a href="#quiz">Self-Check Quiz</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <!-- ================= OBJECTIVES ================= -->
+    <section id="objectives" class="objectives">
+      <h2>Learning Objectives</h2>
+      <p style="margin-top:-6px;color:var(--muted);font-size:.93rem">At the end of this module you should be able to:</p>
+      <ul>
+        <li>Define and describe <strong>databases</strong></li>
+        <li>Define and describe <strong>database objects</strong></li>
+        <li>Describe <strong>opening and closing</strong> a database</li>
+      </ul>
+    </section>
+
+    <!-- ================= SECTION A ================= -->
+    <section id="section-a">
+      <h2 class="section-title"><span class="badge">A</span> Databases</h2>
+
+      <h3><span class="num">A.1</span> What Is a Database?</h3>
+
+      <p>
+        At its core, a <strong>database</strong> is an organized collection of structured
+        information, or data, typically stored electronically in a computer system.
+        Think of it as a highly sophisticated, digital filing cabinet.
+      </p>
+
+      <p>
+        However, it is more than just a place to dump files. A database is managed by a
+        <strong>Database Management System (DBMS)</strong>. The DBMS is the software that
+        interacts with end users, applications, and the database itself to capture and
+        analyze the data. When we talk about "using SQL," we are typically interacting
+        with a DBMS.
+      </p>
+
+      <h4>Key Characteristics of a Database</h4>
+      <ul>
+        <li><strong>Organized</strong> — Data is stored in a structured way, making it easy to find, manage, and update.</li>
+        <li><strong>Persistent</strong> — Data survives after the program that created it has been closed.</li>
+        <li><strong>Shared</strong> — Multiple users or applications can access the data simultaneously (with proper controls).</li>
+        <li><strong>Secure</strong> — Access to data can be controlled and restricted.</li>
+      </ul>
+
+      <h4>Why Are Databases Important?</h4>
+      <ul>
+        <li><strong>Data Integrity</strong> — They enforce rules to ensure data is accurate and consistent.</li>
+        <li><strong>Reduced Redundancy</strong> — They minimize duplicate data.</li>
+        <li><strong>Scalability</strong> — They can grow to store vast amounts of data.</li>
+        <li><strong>Concurrency</strong> — They manage access for many users at once without conflicts.</li>
+        <li><strong>Security</strong> — They provide mechanisms to protect sensitive information.</li>
+      </ul>
+
+      <h3><span class="num">A.2</span> Types of Databases</h3>
+
+      <p>
+        While there are many types, the most common for SQL users are
+        <strong>Relational Databases (RDBMS)</strong>.
+      </p>
+
+      <div class="obj-grid">
+        <div class="obj">
+          <h4>🔗 Relational Database (RDBMS)</h4>
+          <p>
+            The classic type of database that SQL was designed for. It stores data in
+            tables with rows and columns, and it defines relationships between these
+            tables. Examples: <strong>MySQL, PostgreSQL, Microsoft SQL Server, Oracle
+            Database, SQLite</strong>.
+          </p>
+        </div>
+        <div class="obj">
+          <h4>🧩 NoSQL Database</h4>
+          <p>
+            Non-relational databases designed for specific data models (like documents
+            or key-value pairs), often used for large-scale, distributed systems.
+            Examples: <strong>MongoDB</strong> (document), <strong>Redis</strong>
+            (key-value), <strong>Neo4j</strong> (graph).
+          </p>
+        </div>
+      </div>
+
+      <div class="callout key">
+        <p><strong>In this module, our focus is on Relational Databases and how we interact with them using SQL.</strong></p>
+      </div>
+    </section>
+
+    <!-- ================= SECTION B ================= -->
+    <section id="section-b">
+      <h2 class="section-title"><span class="badge">B</span> Database Objects</h2>
+
+      <p>
+        A database is not just one big table. It is a container for several different
+        types of objects that help organize and manage data. Here are the most important
+        ones you will encounter when using SQL.
+      </p>
+
+      <!-- B.1 Tables -->
+      <h3><span class="num">B.1</span> Tables</h3>
+
+      <p>
+        The <strong>Table</strong> is the most fundamental database object. It is where
+        the actual data is stored. A table is a two-dimensional structure consisting of
+        rows and columns.
+      </p>
+
+      <ul>
+        <li>
+          <strong>Columns</strong> — also known as <em>fields</em> or <em>attributes</em>.
+          Each column represents a specific piece of information (e.g. <code>CustomerID</code>,
+          <code>FirstName</code>, <code>Email</code>). Every column has a specific data
+          type (e.g. integer, text, date).
+        </li>
+        <li>
+          <strong>Rows</strong> — also known as <em>records</em> or <em>tuples</em>.
+          Each row represents a single, unique instance of the data (e.g. a single customer).
+        </li>
+      </ul>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Example: the <code>Customers</code> table</caption>
+          <thead>
+            <tr>
+              <th>CustomerID <span style="text-transform:none;font-weight:400">(INT)</span></th>
+              <th>FirstName <span style="text-transform:none;font-weight:400">(VARCHAR)</span></th>
+              <th>LastName <span style="text-transform:none;font-weight:400">(VARCHAR)</span></th>
+              <th>Email <span style="text-transform:none;font-weight:400">(VARCHAR)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>John</td><td>Doe</td><td>john.doe@email.com</td></tr>
+            <tr><td>2</td><td>Jane</td><td>Smith</td><td>jane.smith@email.com</td></tr>
+            <tr><td>3</td><td>Peter</td><td>Jones</td><td>peter.jones@email.com</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- B.2 Views -->
+      <h3><span class="num">B.2</span> Views</h3>
+
+      <p>
+        A <strong>View</strong> is a virtual table based on the result set of an SQL
+        statement. It is not a physical table and does not store data itself (with some
+        exceptions, like materialized views). Instead, it is a saved query that acts like
+        a table.
+      </p>
+
+      <h4>Purpose</h4>
+      <ul>
+        <li><strong>Simplicity</strong> — To hide complex queries and present a simple, easy-to-use table to users.</li>
+        <li><strong>Security</strong> — To restrict access to specific rows or columns of an underlying table. For example, a view could show only non-sensitive employee data.</li>
+        <li><strong>Consistency</strong> — To provide a stable interface even if the underlying table structure changes.</li>
+      </ul>
+
+      <div class="codeblock">
+        <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="lang">SQL</span></div>
+        <pre><code>CREATE VIEW ActiveCustomers AS
+SELECT CustomerID, FirstName, LastName
+FROM Customers
+WHERE IsActive = 1;</code></pre>
+      </div>
+
+      <p>Now, you can query <code>ActiveCustomers</code> just like a regular table.</p>
+
+      <!-- B.3 Indexes -->
+      <h3><span class="num">B.3</span> Indexes</h3>
+
+      <p>
+        An <strong>Index</strong> is a special lookup table that the database search
+        engine can use to speed up data retrieval. Think of it as the index at the back
+        of a textbook.
+      </p>
+
+      <ul>
+        <li><strong>Purpose</strong> — To significantly improve the performance of <code>SELECT</code> queries, particularly on large tables with <code>WHERE</code> clauses.</li>
+        <li><strong>How it works</strong> — Without an index, the database must scan every row in a table to find the ones you want (a "full table scan"). With an index, it can find the data much faster.</li>
+        <li><strong>Trade-off</strong> — While indexes speed up reads (queries), they can slow down writes (<code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>) because the index itself must be updated.</li>
+      </ul>
+
+      <div class="codeblock">
+        <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="lang">SQL</span></div>
+        <pre><code>CREATE INDEX idx_lastname
+ON Customers (LastName);</code></pre>
+      </div>
+
+      <p>
+        This creates an index on the <code>LastName</code> column, making it much faster
+        to find customers by their last name.
+      </p>
+
+      <!-- B.4 Stored Procedures -->
+      <h3><span class="num">B.4</span> Stored Procedures and Functions</h3>
+
+      <p>
+        A <strong>Stored Procedure</strong> is prepared SQL code that you can save and
+        reuse. It is like a script or a function in a programming language.
+      </p>
+
+      <ul>
+        <li><strong>Purpose</strong> — To encapsulate business logic, perform complex operations, and improve performance by reducing network traffic.</li>
+        <li><strong>How it works</strong> — You call the procedure by name, and it executes the SQL statements inside it, optionally using parameters you provide.</li>
+      </ul>
+
+      <div class="codeblock">
+        <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="lang">SQL</span></div>
+        <pre><code>CREATE PROCEDURE GetCustomerByID (IN cust_id INT)
+BEGIN
+    SELECT * FROM Customers WHERE CustomerID = cust_id;
+END;</code></pre>
+      </div>
+
+      <p>You would then execute it with <code>CALL GetCustomerByID(1);</code></p>
+
+      <!-- B.5 Triggers -->
+      <h3><span class="num">B.5</span> Triggers</h3>
+
+      <p>
+        A <strong>Trigger</strong> is a special type of stored procedure that automatically
+        executes in response to certain events on a particular table or view.
+      </p>
+
+      <ul>
+        <li><strong>Purpose</strong> — To enforce business rules and maintain data integrity automatically.</li>
+        <li><strong>Events</strong> — Triggers are usually fired by <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code> operations.</li>
+        <li><strong>Example</strong> — You could create a trigger that automatically logs every time a customer's email is updated in an <code>AuditLog</code> table.</li>
+      </ul>
+
+      <div class="callout tip">
+        <p><strong>Quick recap:</strong> Tables store data, Views present it, Indexes speed it up, Procedures automate it, and Triggers react to it.</p>
+      </div>
+    </section>
+
+    <!-- ================= SECTION C ================= -->
+    <section id="section-c">
+      <h2 class="section-title"><span class="badge">C</span> Opening and Closing a Database</h2>
+
+      <p>
+        Unlike opening a text file on your computer, connecting to a database is a more
+        formal process. In the world of SQL, "opening" a database is called
+        <strong>connecting</strong>, and "closing" it is called <strong>disconnecting</strong>.
+        This process is managed by the DBMS to ensure security and stability.
+      </p>
+
+      <h3><span class="num">C.1</span> Opening (Connecting to) a Database</h3>
+
+      <p>
+        To work with a database, a client (like a command-line tool, a GUI application
+        such as DBeaver or pgAdmin, or a program you have written) must establish a
+        connection to the database server. This involves a few key pieces of information:
+      </p>
+
+      <ul>
+        <li><strong>Host / Server</strong> — the address of the computer where the database server is running (e.g. <code>localhost</code> or an IP address).</li>
+        <li><strong>Port</strong> — the specific port number the database server is listening on (e.g. <code>3306</code> for MySQL, <code>5432</code> for PostgreSQL).</li>
+        <li><strong>Database Name</strong> — the specific database you want to work with.</li>
+        <li><strong>Username &amp; Password</strong> — credentials to authenticate and authorize your access.</li>
+      </ul>
+
+      <h4>How It Works</h4>
+      <ol>
+        <li><strong>Client request</strong> — Your SQL client sends a connection request to the database server with the credentials.</li>
+        <li><strong>Server verification</strong> — The DBMS verifies the credentials and checks whether you have permission to connect.</li>
+        <li><strong>Session established</strong> — If successful, a session is created, and you can now send SQL queries to the server.</li>
+      </ol>
+
+      <h4>In SQL</h4>
+      <p>
+        The <code>USE</code> command is used to "open" a specific database within an
+        already established connection.
+      </p>
+
+      <div class="codeblock">
+        <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="lang">SQL</span></div>
+        <pre><code>-- First, you connect using your client tool (this part is not a SQL command)
+-- e.g. in a command line: mysql -h localhost -u myuser -p
+
+-- Now you are connected to the server. To start working with a specific database:
+USE MyDatabase;
+
+-- From now on, all queries will be run against the MyDatabase database.</code></pre>
+      </div>
+
+      <h3><span class="num">C.2</span> Closing (Disconnecting from) a Database</h3>
+
+      <p>
+        It is crucial to properly close your connection when you are finished. Failing to
+        do so consumes server resources and can lead to problems.
+      </p>
+
+      <h4>Purpose</h4>
+      <ul>
+        <li><strong>Frees up resources</strong> — the server can reclaim the memory and processing power used by your session.</li>
+        <li><strong>Releases locks</strong> — if your session held any locks on tables or rows, disconnecting releases them, allowing other users to work.</li>
+        <li><strong>Security</strong> — it ends your authenticated session, preventing unauthorized use.</li>
+      </ul>
+
+      <h4>How It Works</h4>
+      <p>
+        The client sends a disconnect command to the server. The server then terminates
+        the session and cleans up any associated resources.
+      </p>
+
+      <h4>In SQL</h4>
+
+      <p><strong>MySQL command-line client:</strong></p>
+      <div class="codeblock">
+        <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="lang">SQL</span></div>
+        <pre><code>EXIT;
+-- or
+QUIT;</code></pre>
+      </div>
+
+      <p><strong>PostgreSQL client (<code>psql</code>):</strong></p>
+      <div class="codeblock">
+        <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="lang">psql</span></div>
+        <pre><code>\q</code></pre>
+      </div>
+
+      <p><strong>In a programming language (e.g. Python):</strong></p>
+      <div class="codeblock">
+        <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="lang">Python</span></div>
+        <pre><code># After you are done with your cursor and queries
+connection.close()</code></pre>
+      </div>
+
+      <div class="callout warn">
+        <p><strong>Best practice:</strong> Always close your connection when you are finished. In GUI tools, click "Disconnect". In scripts, call <code>close()</code> — ideally inside a <code>finally</code> block or a context manager so it always runs.</p>
+      </div>
+    </section>
+
+    <!-- ================= SUMMARY ================= -->
+    <section id="summary">
+      <h2 class="section-title"><span class="badge">✓</span> Summary &amp; Key Takeaways</h2>
+
+      <div class="takeaways">
+        <h2>Remember these points</h2>
+        <ul>
+          <li>A <strong>Database</strong> is an organized collection of data managed by a DBMS.</li>
+          <li><strong>Relational Databases</strong> store data in tables and are the primary use case for SQL.</li>
+          <li>Key <strong>Database Objects</strong>:
+            <br>• <strong>Tables</strong> — store the actual data in rows and columns.
+            <br>• <strong>Views</strong> — virtual tables based on a saved query, used for simplicity and security.
+            <br>• <strong>Indexes</strong> — speed up data retrieval.
+            <br>• <strong>Stored Procedures</strong> — reusable blocks of SQL code.
+            <br>• <strong>Triggers</strong> — automatically run code in response to data changes.
+          </li>
+          <li><strong>Opening a database</strong> means establishing a connection to the database server using credentials.</li>
+          <li><strong>Closing a database</strong> means disconnecting from the server to free up resources and maintain security.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= EXERCISE ================= -->
+    <section id="exercise">
+      <h2 class="section-title"><span class="badge">🛠</span> Hands-On Exercise</h2>
+
+      <div class="card">
+        <ol>
+          <li>
+            <strong>Install a DBMS.</strong> Download and install a free, open-source
+            database such as <strong>PostgreSQL</strong> or <strong>MySQL</strong>. Also
+            install a GUI client like <strong>DBeaver</strong> or <strong>pgAdmin</strong>
+            to make it easier to interact with the database.
+          </li>
+          <li>
+            <strong>Connect.</strong> Use your client to connect to your local database
+            server using the credentials you set up during installation.
+          </li>
+          <li>
+            <strong>Create a database.</strong> Write a <code>CREATE DATABASE</code>
+            statement to create a new database called <code>LearningDB</code>.
+          </li>
+          <li>
+            <strong>Use the database.</strong> Run <code>USE LearningDB;</code> (or your
+            client's equivalent) to "open" it.
+          </li>
+          <li>
+            <strong>Create a table.</strong> Write a <code>CREATE TABLE</code> statement
+            to create a simple <code>Students</code> table with columns such as
+            <code>StudentID</code>, <code>FirstName</code>, and <code>LastName</code>.
+          </li>
+          <li>
+            <strong>Create an index.</strong> Create an index on the
+            <code>LastName</code> column.
+          </li>
+          <li>
+            <strong>Disconnect.</strong> Use your client's "Disconnect" button or the
+            appropriate command to properly close your connection.
+          </li>
+          <li>
+            <strong>Reconnect.</strong> Connect again and run
+            <code>SELECT * FROM Students;</code> to prove you are in the correct database.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= GLOSSARY ================= -->
+    <section id="glossary">
+      <h2 class="section-title"><span class="badge">📖</span> Glossary of Terms</h2>
+
+      <div class="glossary">
+        <div class="term"><b>DBMS</b><span>Database Management System — software that manages databases.</span></div>
+        <div class="term"><b>RDBMS</b><span>Relational Database Management System — a type of DBMS that stores data in related tables.</span></div>
+        <div class="term"><b>SQL</b><span>Structured Query Language — the standard language for interacting with relational databases.</span></div>
+        <div class="term"><b>Table</b><span>A database object that stores data in rows and columns.</span></div>
+        <div class="term"><b>Row / Record</b><span>A single entry in a table.</span></div>
+        <div class="term"><b>Column / Field</b><span>A specific attribute of the data in a table.</span></div>
+        <div class="term"><b>View</b><span>A virtual table generated from a query.</span></div>
+        <div class="term"><b>Index</b><span>A data structure that improves the speed of data retrieval.</span></div>
+        <div class="term"><b>Connection</b><span>An active session between a client and a database server.</span></div>
+      </div>
+    </section>
+
+    <!-- ================= QUIZ ================= -->
+    <section id="quiz">
+      <h2 class="section-title"><span class="badge">✎</span> Self-Check Quiz</h2>
+      <p style="color:var(--muted);font-size:.94rem;margin-bottom:20px">
+        Choose an answer for each question, then click <strong>Check my answers</strong>
+        to see how you did. You can reset and try again as many times as you like.
+      </p>
+
+      <div class="quiz" id="quizBox">
+
+        <!-- Q1 -->
+        <div class="q" data-answer="b"
+             data-explain="A database is the organized collection of data itself; the DBMS is the software that manages that collection.">
+          <p class="q-text"><span class="q-num">1</span> What is the primary difference between a database and a DBMS?</p>
+          <label><input type="radio" name="q1" value="a"><span>A database is software; a DBMS is hardware.</span></label>
+          <label><input type="radio" name="q1" value="b"><span>A database is the organized collection of data; a DBMS is the software that manages it.</span></label>
+          <label><input type="radio" name="q1" value="c"><span>They are exactly the same thing.</span></label>
+          <label><input type="radio" name="q1" value="d"><span>A database only stores text; a DBMS stores all data types.</span></label>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q" data-answer="b"
+             data-explain="A table is made up of columns (fields/attributes) and rows (records/tuples).">
+          <p class="q-text"><span class="q-num">2</span> What are the two main components of a table?</p>
+          <label><input type="radio" name="q2" value="a"><span>Views and indexes</span></label>
+          <label><input type="radio" name="q2" value="b"><span>Rows and columns</span></label>
+          <label><input type="radio" name="q2" value="c"><span>Keys and triggers</span></label>
+          <label><input type="radio" name="q2" value="d"><span>Fields and procedures</span></label>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="q" data-answer="b"
+             data-explain="A view is a virtual table — it is a saved query. It does not store its own copy of the data (unless it is a materialized view).">
+          <p class="q-text"><span class="q-num">3</span> True or False: A View stores its own copy of the data.</p>
+          <label><input type="radio" name="q3" value="a"><span>True</span></label>
+          <label><input type="radio" name="q3" value="b"><span>False</span></label>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="q" data-answer="c"
+             data-explain="An index is a lookup structure that lets the database find rows without scanning the whole table, dramatically speeding up SELECT queries.">
+          <p class="q-text"><span class="q-num">4</span> What is the main purpose of an Index?</p>
+          <label><input type="radio" name="q4" value="a"><span>To enforce security on sensitive columns</span></label>
+          <label><input type="radio" name="q4" value="b"><span>To store backup copies of the data</span></label>
+          <label><input type="radio" name="q4" value="c"><span>To speed up data retrieval</span></label>
+          <label><input type="radio" name="q4" value="d"><span>To define relationships between tables</span></label>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q" data-answer="c"
+             data-explain="Typical connection details are host/server, port, database name, username and password. The number of rows has nothing to do with connecting.">
+          <p class="q-text"><span class="q-num">5</span> Which of the following is <em>NOT</em> typically required to connect to a database?</p>
+          <label><input type="radio" name="q5" value="a"><span>Host / server address</span></label>
+          <label><input type="radio" name="q5" value="b"><span>Username and password</span></label>
+          <label><input type="radio" name="q5" value="c"><span>The total number of rows in the database</span></label>
+          <label><input type="radio" name="q5" value="d"><span>Port number</span></label>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="q" data-answer="a"
+             data-explain="Disconnecting frees up server resources, releases any locks your session held, and ends your authenticated session for security.">
+          <p class="q-text"><span class="q-num">6</span> Why is it important to close a database connection properly?</p>
+          <label><input type="radio" name="q6" value="a"><span>It frees up server resources, releases locks, and ends the authenticated session.</span></label>
+          <label><input type="radio" name="q6" value="b"><span>It permanently deletes the data.</span></label>
+          <label><input type="radio" name="q6" value="c"><span>It converts the database to a different format.</span></label>
+          <label><input type="radio" name="q6" value="d"><span>It is not important; the server handles it automatically.</span></label>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn-primary" id="checkBtn">Check my answers</button>
+          <button type="button" class="btn-ghost" id="resetBtn">Reset</button>
+          <p id="score" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p>
+    <strong>Engr. Lee-Mher S. Binay-an</strong> · Isabela State University<br>
+    Electronic Data Processing Including Business Programming<br>
+    Module 2 — Databases · Learning Materials · Built for students using SQL
+  </p>
+</footer>
+
+<button id="toTop" title="Back to top" aria-label="Back to top">↑</button>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------------------------------------------------------
+     1. Lightweight SQL syntax highlighting
+  --------------------------------------------------------- */
+  var KEYWORDS = ['SELECT','FROM','WHERE','CREATE','DROP','ALTER','TABLE','VIEW','INDEX',
+    'PROCEDURE','FUNCTION','TRIGGER','BEGIN','END','IN','OUT','ON','AS','USE','EXIT','QUIT',
+    'INSERT','INTO','VALUES','UPDATE','SET','DELETE','CALL','AND','OR','NOT','NULL','PRIMARY',
+    'KEY','FOREIGN','REFERENCES','INT','INTEGER','VARCHAR','TEXT','DATE','BOOLEAN','IS','JOIN'];
+
+  var kwRe = new RegExp('\\b(' + KEYWORDS.join('|') + ')\\b', 'gi');
+
+  function highlightSQL(raw) {
+    var store = [];
+    function stash(html) {
+      store.push(html);
+      return '\u0000' + (store.length - 1) + '\u0000';
+    }
+
+    var out = raw
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    // Comments first, then strings, so keywords inside them stay untouched
+    out = out.replace(/--[^\n]*/g, function (m) {
+      return stash('<span class="tok-com">' + m + '</span>');
+    });
+    out = out.replace(/'[^'\n]*'/g, function (m) {
+      return stash('<span class="tok-str">' + m + '</span>');
+    });
+
+    out = out.replace(kwRe, '<span class="tok-kw">$1</span>');
+    out = out.replace(/\b(\d+)\b/g, '<span class="tok-num">$1</span>');
+
+    out = out.replace(/\u0000(\d+)\u0000/g, function (m, i) {
+      return store[Number(i)];
+    });
+
+    return out;
+  }
+
+  document.querySelectorAll('.codeblock').forEach(function (block) {
+    var langEl = block.querySelector('.lang');
+    var lang = langEl ? langEl.textContent.trim().toLowerCase() : '';
+    var code = block.querySelector('code');
+    if (!code) return;
+    if (lang === 'sql') {
+      code.innerHTML = highlightSQL(code.textContent);
+    }
+  });
+
+  /* ---------------------------------------------------------
+     2. Scroll spy for the table of contents
+  --------------------------------------------------------- */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var sections = tocLinks
+    .map(function (a) { return document.querySelector(a.getAttribute('href')); })
+    .filter(Boolean);
+
+  function setActive(id) {
+    tocLinks.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  if ('IntersectionObserver' in window && sections.length) {
+    var visible = {};
+
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        visible[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0;
+      });
+
+      var bestId = null;
+      var bestRatio = 0;
+      Object.keys(visible).forEach(function (id) {
+        if (visible[id] > bestRatio) {
+          bestRatio = visible[id];
+          bestId = id;
+        }
+      });
+      if (bestId) setActive(bestId);
+    }, {
+      rootMargin: '-10% 0px -55% 0px',
+      threshold: [0, 0.25, 0.5, 0.75, 1]
+    });
+
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ---------------------------------------------------------
+     3. Reading progress bar + back-to-top button
+  --------------------------------------------------------- */
+  var bar = document.getElementById('progressBar');
+  var toTop = document.getElementById('toTop');
+
+  function onScroll() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var pct = max > 0 ? (h.scrollTop || document.body.scrollTop) / max * 100 : 0;
+    bar.style.width = pct + '%';
+    toTop.classList.toggle('show', (h.scrollTop || document.body.scrollTop) > 420);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ---------------------------------------------------------
+     4. Interactive quiz
+  --------------------------------------------------------- */
+  var quizBox = document.getElementById('quizBox');
+  var questions = Array.prototype.slice.call(quizBox.querySelectorAll('.q'));
+  var scoreEl = document.getElementById('score');
+
+  document.getElementById('checkBtn').addEventListener('click', function () {
+    var score = 0;
+
+    questions.forEach(function (q, idx) {
+      var name = 'q' + (idx + 1);
+      var chosen = q.querySelector('input[name="' + name + '"]:checked');
+      var fb = q.querySelector('.feedback');
+
+      q.querySelectorAll('label').forEach(function (l) {
+        l.classList.remove('correct', 'incorrect');
+      });
+
+      if (!chosen) {
+        fb.className = 'feedback show neutral';
+        fb.innerHTML = '⚠️ You did not choose an answer for this question.';
+        return;
+      }
+
+      var isCorrect = chosen.value === q.dataset.answer;
+      chosen.closest('label').classList.add(isCorrect ? 'correct' : 'incorrect');
+
+      if (isCorrect) {
+        score++;
+      } else {
+        var right = q.querySelector('input[value="' + q.dataset.answer + '"]');
+        if (right) right.closest('label').classList.add('correct');
+      }
+
+      fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'no');
+      fb.innerHTML = (isCorrect ? '✅ <strong>Correct!</strong> ' : '❌ <strong>Not quite.</strong> ')
+        + q.dataset.explain;
+    });
+
+    scoreEl.textContent = 'Score: ' + score + ' / ' + questions.length +
+      (score === questions.length ? ' 🎉 Perfect!' : '');
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function () {
+    quizBox.querySelectorAll('input[type="radio"]').forEach(function (i) { i.checked = false; });
+    quizBox.querySelectorAll('label').forEach(function (l) {
+      l.classList.remove('correct', 'incorrect');
+    });
+    quizBox.querySelectorAll('.feedback').forEach(function (f) {
+      f.className = 'feedback';
+      f.innerHTML = '';
+    });
+    scoreEl.textContent = '';
+    window.scrollTo({
+      top: document.getElementById('quiz').offsetTop - 20,
+      behavior: 'smooth'
+    });
+  });
+
+})();
+</script>
+</body>
+</html>
